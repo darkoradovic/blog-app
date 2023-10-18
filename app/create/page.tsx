@@ -2,7 +2,7 @@
 
 import { useContext, useState } from "react";
 import { GlobalContext } from "../../context";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { firebaseConfig, formControls } from "../../utils";
 import { BlogFormData } from "../../utils/types";
@@ -49,6 +49,7 @@ export default function Create() {
   const { formData, setFormData } = useContext(GlobalContext);
   const [imageLoading, setImageLoading] = useState<boolean>(false);
   const { data: session } = useSession();
+  const router = useRouter();
 
   async function handleBlogImage(event: React.ChangeEvent<HTMLInputElement>) {
     if (!event.target.files) return;
@@ -81,7 +82,9 @@ export default function Create() {
     });
 
     const data = await res.json();
-    console.log(data);
+    if (data && data.success) {
+      router.push("/blogs");
+    }
   }
 
   return (

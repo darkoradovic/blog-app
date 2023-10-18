@@ -9,6 +9,7 @@ import { menuItems } from "../../utils";
 import { MenuItem } from "../../utils/types";
 import ThemeToggler from "../Theme";
 import Button from "../Button";
+import { GlobalContext } from "../../context";
 
 export default function Header() {
   const [sticky, setSticky] = useState<boolean>(false);
@@ -16,6 +17,7 @@ export default function Header() {
   const { data: session } = useSession();
   const router = useRouter();
   const pathName = usePathname();
+  const { setSearchResults } = useContext(GlobalContext);
 
   function handleStickyNavbar() {
     if (window.scrollY >= 80) setSticky(true);
@@ -29,6 +31,10 @@ export default function Header() {
   useEffect(() => {
     window.addEventListener("scroll", handleStickyNavbar);
   });
+
+  useEffect(() => {
+    setSearchResults([]);
+  }, [pathName]);
 
   return (
     <div>
