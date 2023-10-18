@@ -1,4 +1,3 @@
-import { env } from "process";
 import BlogList from "../../components/Blogs/BlogsList";
 
 async function getAllBlogs() {
