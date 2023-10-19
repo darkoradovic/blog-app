@@ -22,6 +22,9 @@ Full stack NextJS 13 blog app build from scratch using Prisma, PostgreSQL, Tailw
 
 ## 📌 Links
 
+- [NextJS](https://nextjs.org/)
+- [Prisma](https://www.prisma.io/)
+- [PostgreSQL](https://www.postgresql.org/)
 - [Firebase](https://firebase.google.com/)
 
 ## 📊 Project status
