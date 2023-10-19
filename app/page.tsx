@@ -10,7 +10,7 @@ export default function Home() {
             <div className="w-full px-4">
               <div className="mx-auto max-w-[800px] text-center">
                 <h1 className="mb-5 text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl sm:leading-tight md:text-5xl md:leading-tight">
-                  Free Next.js Full-Stack Website Using Prisma
+                  Next.js Full-Stack Website Using Prisma with PostgreSQL
                 </h1>
                 <p className="mb-12 text-base font-medium !leading-relaxed text-body-color dark:text-white dark:opacity-90 sm:text-lg md:text-xl">
                   This is a Free Next.js full stack template that you can use to
