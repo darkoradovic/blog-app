@@ -69,6 +69,7 @@ export default function CategoryList({ list }: { list: Blog[] }) {
                     <button
                       onClick={() => router.push(`/category/${catItem.value}`)}
                       className="mr-3 mb-3 inline-flex items-center justify-center rounded-md bg-primary py-2 px-4 text-white duration-300"
+                      key={catItem.value}
                     >
                       {catItem.label}
                     </button>

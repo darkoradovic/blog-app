@@ -25,6 +25,7 @@ export default function BlogDetailsPage({ blogData }: { blogData: Blog }) {
       body: JSON.stringify({
         id: blogData?.id,
         comments: extractedComments,
+        userImage: session?.user.image ? session?.user.image : "",
       }),
     });
 
@@ -62,7 +63,13 @@ export default function BlogDetailsPage({ blogData }: { blogData: Blog }) {
                     <div className="mr-10 mb-5 flex items-center">
                       <div className="mr-4">
                         <div className="relative h-10 w-10 overflow-hidden rounded-full">
-                          <Image src={blogData?.userImage} alt="User" fill />
+                          {blogData?.userImage ? (
+                            <Image src={blogData?.userImage} alt="User" fill />
+                          ) : (
+                            <span className="bg-primary bg-opacity-30 h-10 w-10 relative flex items-center justify-center text-white">
+                              {blogData?.userId.charAt(0).toUpperCase()}
+                            </span>
+                          )}
                         </div>
                       </div>
                       <div className="w-full">
@@ -128,12 +135,26 @@ export default function BlogDetailsPage({ blogData }: { blogData: Blog }) {
               </div>
               {blogData && blogData.comments && blogData.comments.length > 0
                 ? blogData.comments.map((comment) => (
-                    <div className="p-6 text-base rounded-lg dark:bg-gray-900">
+                    <div
+                      className="p-6 text-base rounded-lg dark:bg-gray-900"
+                      key={blogData.id}
+                    >
                       <div className="flex justify-between items-center mb-2">
                         <div className="flex items-center space-x-5">
                           <div className="relative h-10 w-10 overflow-hidden rounded-full">
-                            <Image src={blogData?.userImage} alt="User" fill />
+                            {blogData?.userImage ? (
+                              <Image
+                                src={blogData?.userImage}
+                                alt="User"
+                                fill
+                              />
+                            ) : (
+                              <span className="bg-primary bg-opacity-30 h-10 w-10 relative flex items-center justify-center text-white">
+                                {blogData?.userId.charAt(0).toUpperCase()}
+                              </span>
+                            )}
                           </div>
+
                           <p className="inline-flex items-center mr-3 text-sm text-black dark:text-white font-semibold">
                             {comment.split("|")[1] === blogData?.userId
                               ? `${

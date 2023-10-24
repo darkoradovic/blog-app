@@ -11,13 +11,13 @@ export async function POST(req: NextRequest) {
    if(newData){
     return NextResponse.json({success: true, message: 'New blog added successfully'})
    }else{
-    return NextResponse.json({success: false, message: 'SOmwthing went wrong!'})
+    return NextResponse.json({success: false, message: 'Something went wrong!'})
    }
 
     
    } catch (error) {
         console.log(error)
 
-        return NextResponse.json({success: false, message: 'Someyhing went wrong!'})
+        return NextResponse.json({success: false, message: 'Something went wrong!'})
    }
 }

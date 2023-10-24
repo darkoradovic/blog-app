@@ -116,12 +116,11 @@ export default function Header() {
                     text="Create"
                   />
                 ) : null}
-                <Button
-                  onClick={
-                    session !== null ? () => signOut() : () => signIn("github")
-                  }
-                  text={session !== null ? "Logout" : "Login"}
-                />
+                {session !== null ? (
+                  <Button onClick={() => signOut()} text="Logout" />
+                ) : null}
+                {session === null ? <Link href={"/login"}>Login </Link> : null}
+
                 <div className="flex gap-3 items-center">
                   <ThemeToggler />
                 </div>

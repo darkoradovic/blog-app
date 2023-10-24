@@ -42,7 +42,13 @@ export default function SingleBlog({
             <div className="flex">
               <div className="mr-4">
                 <div className="h-10 relative w-10 overflow-hidden rounded-full">
-                  <img alt="Author" src={userImage} />
+                  {userImage ? (
+                    <img alt="Author" src={userImage} />
+                  ) : (
+                    <span className="bg-primary bg-opacity-30 h-10 w-10 relative flex items-center justify-center text-white">
+                      {userId.charAt(0).toUpperCase()}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="flex flex-col">

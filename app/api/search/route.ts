@@ -11,12 +11,14 @@ export async function GET(req: NextRequest) {
                 OR: [
                     {
                         title: {
-                            contains: extractQuery || ''
+                            contains: extractQuery || '',
+                            mode: 'insensitive'
                         }
                     },
                     {
                         description: {
-                            contains: extractQuery || ''
+                            contains: extractQuery || '',
+                            mode: 'insensitive'
                         }
                     },
                 ]

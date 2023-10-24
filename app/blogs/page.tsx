@@ -13,6 +13,5 @@ async function getAllBlogs() {
 
 export default async function Blogs() {
   const blogsList = await getAllBlogs();
-  console.log(blogsList);
   return <BlogList lists={blogsList} />;
 }

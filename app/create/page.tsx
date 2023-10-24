@@ -76,7 +76,7 @@ export default function Create() {
       body: JSON.stringify({
         ...formData,
         userId: session?.user?.name,
-        userImage: session?.user?.image,
+        userImage: session?.user?.image ? session?.user?.image : "",
         comments: [],
       }),
     });
@@ -191,6 +191,12 @@ export default function Create() {
                       <Button
                         text="Create New Blog"
                         onClick={handleSaveBlogPost}
+                        disabled={
+                          formData.title === "" ||
+                          formData.category === "" ||
+                          formData.description === "" ||
+                          formData.image === ""
+                        }
                       />
                     </div>
                   </div>
