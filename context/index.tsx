@@ -46,8 +46,6 @@ export default function GlobalState({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
 
-  if (session === undefined) return <Spinner />;
-
   if (session === null && pathname === "/create") router.push("/");
 
   return (

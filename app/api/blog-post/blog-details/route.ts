@@ -16,8 +16,6 @@ export async function GET(req: NextRequest) {
          return NextResponse.json({success: false, message: 'Failed to search results!'})
      }
    } catch (error) {
-        console.log(error)
-
         return NextResponse.json({success: false, message: 'Someyhing went wrong!'})
    }
 }

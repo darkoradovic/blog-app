@@ -30,3 +30,35 @@ Full stack NextJS 13 blog app build from scratch using Prisma, PostgreSQL, Tailw
 ## 📊 Project status
 
 ✅ Ongoing
+
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+provider = "prisma-client-js"
+}
+
+datasource db {
+provider = "postgresql"
+url = env("DATABASE_URL")
+}
+
+model Post {
+id Int @id @default(autoincrement())
+title String
+description String
+image String
+category String
+userId String
+userImage String
+comments String[]
+}
+
+model User {
+id Int @id @default(autoincrement())
+email String @unique
+username String @unique
+password String
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
+}

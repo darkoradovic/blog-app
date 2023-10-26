@@ -7,25 +7,44 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Blog } from "../../../utils/types";
 import Button from "../../Button";
+import moment from "moment";
 
 export default function BlogDetailsPage({ blogData }: { blogData: Blog }) {
   const [comment, setComment] = useState<string>("");
   const { data: session } = useSession();
   const router = useRouter();
+  const [comments, setComments] = useState<any>([]);
+
+  useEffect(() => {
+    async function getComments() {
+      const res = await fetch(
+        `http://localhost:3000/api/comments?blogId=${blogData?.id}`,
+        {
+          method: "GET",
+          cache: "no-store",
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.success) {
+        setComments(data.data);
+      }
+    }
+    getComments();
+  }, [comment]);
 
   async function handleCommentSave() {
-    let extractedComments = [...blogData.comments];
-    extractedComments.push(`${comment}|${session?.user?.name}`);
-
     const res = await fetch(`/api/blog-post/update-post`, {
-      method: "PUT",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        id: blogData?.id,
-        comments: extractedComments,
+        comment: comment,
         userImage: session?.user.image ? session?.user.image : "",
+        author: session?.user.name,
+        postId: blogData?.id,
       }),
     });
 
@@ -36,7 +55,7 @@ export default function BlogDetailsPage({ blogData }: { blogData: Blog }) {
     }
   }
 
-  useEffect(() => {
+  /*   useEffect(() => {
     let interval = setInterval(() => {
       router.refresh();
     }, 2000);
@@ -44,7 +63,7 @@ export default function BlogDetailsPage({ blogData }: { blogData: Blog }) {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, []); */
 
   if (!blogData) return null;
 
@@ -130,45 +149,63 @@ export default function BlogDetailsPage({ blogData }: { blogData: Blog }) {
             <section className="dark:bg-gray-900 py-8 lg:py-16 w-full lg:w-8/12">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-lg lg:text-2xl font-bold text-black dark:text-white">
-                  Discussion ({blogData?.comments.length})
+                  Discussion (
+                  {comments?.map((data: any) => {
+                    return data?.comments.length;
+                  })}
+                  )
                 </h2>
               </div>
-              {blogData && blogData.comments && blogData.comments.length > 0
-                ? blogData.comments.map((comment) => (
-                    <div
-                      className="p-6 text-base rounded-lg dark:bg-gray-900"
-                      key={blogData.id}
-                    >
-                      <div className="flex justify-between items-center mb-2">
-                        <div className="flex items-center space-x-5">
-                          <div className="relative h-10 w-10 overflow-hidden rounded-full">
-                            {blogData?.userImage ? (
-                              <Image
-                                src={blogData?.userImage}
-                                alt="User"
-                                fill
-                              />
-                            ) : (
-                              <span className="bg-primary bg-opacity-30 h-10 w-10 relative flex items-center justify-center text-white">
-                                {blogData?.userId.charAt(0).toUpperCase()}
-                              </span>
-                            )}
+              {blogData && comments && comments?.length > 0
+                ? comments?.map((data: any) => {
+                    return data.comments.map((comment: any) => {
+                      return (
+                        <div
+                          className="p-6 text-base rounded-lg dark:bg-gray-900"
+                          key={comment.createdAt}
+                        >
+                          <div className="flex  items-center mb-2">
+                            <div className="relative h-10 w-10 overflow-hidden rounded-full">
+                              {comment?.userImage !== "" ? (
+                                <Image
+                                  src={comment?.userImage}
+                                  alt="User"
+                                  fill
+                                />
+                              ) : (
+                                <span className="bg-primary bg-opacity-30 h-10 w-10 relative flex items-center justify-center text-white">
+                                  {comment?.author.charAt(0).toUpperCase()}
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex space-x-5 flex-col ml-3">
+                              <div>
+                                <p className="inline-flex items-center mr-3 text-sm text-black dark:text-white font-semibold">
+                                  {comment.author === blogData?.userId
+                                    ? `${
+                                        comment.author.includes("_")
+                                          ? comment.author.split("_")[0]
+                                          : comment.author
+                                      } (Author)`
+                                    : comment.author.includes("_")
+                                    ? comment.author.split("_")[0]
+                                    : comment.author}
+                                </p>
+                                <p className="inline-flex items-center  text-sm text-black dark:text-white font-semibold">
+                                  {moment(comment.createdAt).format(
+                                    "M-D-YYYY, H:mm"
+                                  )}
+                                </p>
+                              </div>
+                              <p className="text-gray-500 dark:text-gray-400 !ml-0 lg:w-[700px] line-clamp-2">
+                                {comment.content}
+                              </p>
+                            </div>
                           </div>
-
-                          <p className="inline-flex items-center mr-3 text-sm text-black dark:text-white font-semibold">
-                            {comment.split("|")[1] === blogData?.userId
-                              ? `${
-                                  comment.split("|")[1].split("_")[0]
-                                } (Author)`
-                              : comment.split("|")[1].split("_")[0]}
-                          </p>
                         </div>
-                      </div>
-                      <p className="text-gray-500 dark:text-gray-400">
-                        {comment.split("|")[0]}
-                      </p>
-                    </div>
-                  ))
+                      );
+                    });
+                  })
                 : null}
             </section>
           </div>

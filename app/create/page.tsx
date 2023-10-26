@@ -77,7 +77,6 @@ export default function Create() {
         ...formData,
         userId: session?.user?.name,
         userImage: session?.user?.image ? session?.user?.image : "",
-        comments: [],
       }),
     });
 

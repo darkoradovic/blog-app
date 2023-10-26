@@ -32,6 +32,13 @@ export interface Blog{
     category : string;
     userId : string;
     userImage : string;
-    comments : string[];
+    comments : Comment[];
     image : string;
+}
+
+export interface Comment{
+    id: number
+    content: string
+    author: string
+    postId: string
 }

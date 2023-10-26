@@ -1,18 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../db";
 
-export async function PUT(req: NextRequest) {
+export async function POST(req: NextRequest) {
    try {
     const extractData = await req.json()
-    const updatedBlog = await prisma.post.update({
-      where : {
-         id: Number(extractData.id)
-      },
-      data: {
-         comments: extractData.comments
+
+    const comment = await prisma.comment.create({
+      data:{
+        content: extractData.comment,
+        postId: extractData.postId,
+        author: extractData.author,
+        userImage: extractData.userImage
       }
-    })
-    if(updatedBlog){
+    });
+    
+    if(comment){
       return NextResponse.json({success: true, message: 'Blog updated'})
     }else{
       return NextResponse.json({success: false, message: 'Someyhing went wrong!'})
